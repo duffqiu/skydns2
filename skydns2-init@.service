@@ -1,0 +1,12 @@
+[Unit]
+Description=skydns2 init data in etcd
+BindsTo=skydns2@i.service
+After=skydns2@i.service
+
+[Service]
+EnvironmentFile=/etc/environment
+ExecStart=/bin/sh -c "while true; do sleep 45; done"
+ExecStop=/bin/curl -XDELETE http://$COREOS_PRIVATE_IPV4:4001/v2/keys/skydns/org/duffqiu/dns/ns-%i
+
+[X-Fleet]
+MachineOf=skydns2@i.service

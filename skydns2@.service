@@ -1,0 +1,25 @@
+[Unit]
+Description=skydns2
+After=docker.service
+Requires=docker.service
+
+[Service]
+EnvironmentFile=/etc/environment
+Environment="DOMAIN_NAME=duffqiu.org"
+Environment="ETCD_RUL=http://$COREOS_PRIVATE_IPV4:4001"
+ExecStartPre=-/usr/bin/docker kill skydns2-%i
+ExecStartPre=-/usr/bin/docker rm skydns2-%i
+ExecStartPre=-/bin/curl -XPUT http://$COREOS_PRIVATE_IPV4:4001/v2/keys/skydns/org/duffqiu/dns/ns-%i -d value='{"host":"$COREOS_PRIVATE_IPV4"}'
+ExecStartPre=/usr/bin/docker pull duffqiu/skydns2
+ExecStart=/usr/bin/docker run --rm \
+                              --name skydns2-%i \
+                              --env SKYDNS_DOMAIN=${DOMAIN_NAME} \
+                              --env ETCD_MACHINES=${ETCD_RUL} \
+                              --hostname skydns2-%i.${DOMAIN_NAME} \
+                              -p 53:53/tcp \
+                              -p 53:53/udp \
+                              duffqiu/skydns2:latest
+ExecStop=/usr/bin/docker stop skydns2-%i
+
+[X-Fleet]
+X-Conflicts=skydns2@*.service

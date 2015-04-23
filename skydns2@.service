@@ -8,15 +8,14 @@ EnvironmentFile=/etc/environment
 Environment="DOMAIN_NAME=duffqiu.org"
 ExecStartPre=-/usr/bin/docker kill skydns2-%i
 ExecStartPre=-/usr/bin/docker rm skydns2-%i
-ExecStartPre=-/bin/curl -XPUT http://${COREOS_PRIVATE_IPV4}:4001/v2/keys/skydns/org/duffqiu/dns/ns%i -d value='{"host":"${COREOS_PRIVATE_IPV4}"}'
-ExecStartPre=/usr/bin/docker pull duffqiu/skydns2
+ExecStartPre=/bin/curl -v -L -XPUT http://${COREOS_PRIVATE_IPV4}:4001/v2/keys/config -d value='{"dns_addr":"0.0.0.0:53","ttl":100, "nameservers": ["146.11.5.10:53","146.11.115.200:53"], "domain":"${DOMAIN_NAME}"}'
 ExecStart=/usr/bin/docker run --rm \
                               --name skydns2-%i \
                               --env SKYDNS_DOMAIN=${DOMAIN_NAME} \
-                              --env ETCD_MACHINES=http://${COREOS_PRIVATddE_IPV4}:4001 \
+                              --env ETCD_MACHINES=http://${COREOS_PRIVATE_IPV4}:4001 \
                               --hostname ns%i.${DOMAIN_NAME} \
-                              -p 53:53/tcp \
-                              -p 53:53/udp \
+                              -p ${COREOS_PRIVATE_IPV4}:53:53/tcp \
+                              -p ${COREOS_PRIVATE_IPV4}:53:53/udp \
                               duffqiu/skydns2:latest
 ExecStop=/usr/bin/docker stop skydns2-%i
 

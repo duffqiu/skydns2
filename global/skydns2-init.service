@@ -1,0 +1,14 @@
+[Unit]
+Description=skydns init data sidekick
+BindsTo=skydns2.service
+After=skydns2.service
+
+[Service]
+Restart=always
+RestartSec=30
+EnvironmentFile=/etc/environment
+ExecStartPre=/usr/bin/etcdctl set --ttl=60 /skydns/org/duffqiu/cluster/dns/ns%H '{"host":"${COREOS_PRIVATE_IPV4}","port":53}'
+ExecStart=/bin/sh -c "echo skydns is running on culster id:%H ip:${COREOS_PRIVATE_IPV4}"
+
+[X-Fleet]
+Global=true

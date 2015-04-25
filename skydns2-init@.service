@@ -1,7 +1,7 @@
 [Unit]
 Description=skydns init data sidekick
 BindsTo=skydns2@%i.service
-After=skydns2@i.service
+After=skydns2@%i.service
 
 [Service]
 Restart=always

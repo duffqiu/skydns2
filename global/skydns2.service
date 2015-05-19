@@ -3,6 +3,8 @@ Description=skydns2
 After=docker.service
 
 [Service]
+Restart=always
+RestartSec=15
 EnvironmentFile=/etc/environment
 Environment="DOMAIN_NAME=cluster.duffqiu.org"
 ExecStartPre=-/usr/bin/docker kill skydns2-%H

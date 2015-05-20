@@ -1,6 +1,7 @@
 [Unit]
 Description=skydns2
 After=docker.service
+Wants=skydns2-init.service
 
 [Service]
 Restart=always

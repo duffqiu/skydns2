@@ -12,3 +12,4 @@ ExecStart=/bin/sh -c "echo skydns is running on culster id:%H ip:${COREOS_PRIVAT
 
 [X-Fleet]
 Global=true
+MachineMetadata=role=back

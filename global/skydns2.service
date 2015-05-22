@@ -6,7 +6,7 @@ Wants=skydns2-init.service
 [Service]
 Restart=always
 RestartSec=15
-TimeoutSec=120
+TimeoutSec=10m
 EnvironmentFile=/etc/environment
 Environment="DOMAIN_NAME=cluster.duffqiu.org"
 ExecStartPre=-/usr/bin/docker kill skydns2-%H
@@ -25,3 +25,4 @@ ExecStop=/usr/bin/docker stop skydns2-%H
 
 [X-Fleet]
 Global=true
+MachineMetadata=role=back

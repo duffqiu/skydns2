@@ -25,4 +25,3 @@ ExecStop=/usr/bin/docker stop skydns2-%H
 
 [X-Fleet]
 Global=true
-MachineMetadata=role=back

@@ -12,7 +12,7 @@ Environment="DOMAIN_NAME=cluster.duffqiu.org"
 ExecStartPre=-/usr/bin/docker kill skydns2-%H
 ExecStartPre=-/usr/bin/docker rm skydns2-%H
 ExecStartPre=/usr/bin/docker pull  duffqiu/skydns2:latest
-ExecStartPre=/usr/bin/etcdctl set /skydns/config '{"dns_addr":"0.0.0.0:53","ttl":3600, "nameservers": ["146.11.5.10:53","146.11.115.200:53"],"rcache_ttl":5, "hostmaster":"duffqiu@gmail.com"}'
+ExecStartPre=/usr/bin/etcdctl set /skydns/config '{"dns_addr":"0.0.0.0:53","ttl":3600, "nameservers": ["114.114.114.114:53","202.96.128.86:53"],"rcache_ttl":5, "hostmaster":"duffqiu@gmail.com"}'
 ExecStart=/usr/bin/docker run --rm \
                               --name skydns2-%H \
                               --env SKYDNS_DOMAIN=${DOMAIN_NAME} \
